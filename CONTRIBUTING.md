@@ -9,14 +9,15 @@
 ```sh
 git clone https://github.com/Tencent/Shadow.git //大概之前你已经这样clone过Shadow的代码库了
 cd shadow //切换到你clone的shadow目录
-git remote add your_name https://github.com/<your_name>/Shadow.git //把你fork的版本库添加成一个远端
+git remote add listen2code https://github.com/listen2code/Shadow.git //把你fork的版本库添加成一个远端
 git fetch --all //更新所有远端的代码
-git checkout -b new_branch_name origin/dev // 基于Shadow代码库的dev分支新建一个分支
+git checkout -b listen4Shadow origin/master // 基于Shadow代码库的dev分支新建一个分支
 //加上你复现问题的修改
 git commit
-git push -u your_name  //推送new_branch_name分支到你fork的版本库
+git push -u listen2code  //推送new_branch_name分支到你fork的版本库
 ```
-然后你的分支地址应该类似：`https://github.com/<your_name>/Shadow/tree/new_branch_name`
+然后你的分支地址应该类似：`https://github.com/listen2code/Shadow/tree/new_branch_name`
+
 
 其他人可以用这样的命令获取到你的分支，看到你的提交做了哪些改动，运行并Debug。
 ```sh
