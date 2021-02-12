@@ -1,0 +1,98 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 29
+    defaultConfig {
+        applicationId "com.tencent.shadow.sample.plugin2"
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.create("release")
+            signingConfig.initWith(buildTypes.debug.signingConfig)
+        }
+    }
+}
+
+dependencies {
+    implementation project(':plugin-main-lib2')
+}
+
+android {
+    defaultConfig {
+        //再把applicationId改成宿主的
+        applicationId "com.tencent.shadow.sample.host"
+    }
+}
+
+dependencies {
+    //Shadow Transform后业务代码会有一部分实际引用runtime中的类
+    //如果不以compileOnly方式依赖，会导致其他Transform或者Proguard找不到这些类
+    compileOnly "com.tencent.shadow.core:runtime:$shadow_version"
+}
+
+//这段buildscript配置的dependencies是为了apply plugin: 'com.tencent.shadow.plugin'能找到实现
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        mavenLocal()
+    }
+
+    dependencies {
+        classpath "com.tencent.shadow.core:gradle-plugin:$shadow_version"
+    }
+}
+
+apply plugin: 'com.tencent.shadow.plugin'
+
+shadow {
+    packagePlugin {
+        pluginTypes {
+            debug {
+//                loaderApkConfig = new Tuple2('sample-loader-debug.apk', ':sample-loader:assembleDebug')
+//                runtimeApkConfig = new Tuple2('sample-runtime-debug.apk', ':sample-runtime:assembleDebug')
+                pluginApks {
+                    pluginApk1 {
+                        businessName = 'sample-plugin2'//businessName相同的插件，context获取的Dir是相同的。businessName留空，表示和宿主相同业务，直接使用宿主的Dir。
+                        partKey = 'sample-plugin2'
+                        buildTask = 'assembleDebug'
+                        apkName = 'plugin-shadow-apk2-debug.apk'
+                        apkPath = 'plugin-shadow-apk2/build/outputs/apk/debug/plugin-shadow-apk2-debug.apk'
+                    }
+                }
+            }
+
+            release {
+//                loaderApkConfig = new Tuple2('sample-loader-release.apk', ':sample-loader:assembleRelease')
+//                runtimeApkConfig = new Tuple2('sample-runtime-release.apk', ':sample-runtime:assembleRelease')
+                pluginApks {
+                    pluginApk1 {
+                        businessName = 'demo2'
+                        partKey = 'sample-plugin2'
+                        buildTask = 'assembleRelease'
+                        apkName = 'plugin-shadow-apk2-release.apk'
+                        apkPath = 'plugin-shadow-apk2/build/outputs/apk/release/plugin-shadow-apk2-release.apk'
+                    }
+                }
+            }
+        }
+
+        uuid = '1234567890'
+//        loaderApkProjectPath = 'sample-loader'
+//        runtimeApkProjectPath = 'sample-runtime'
+
+        archivePrefix = 'plugin2'
+
+        version = 4
+        compactVersion = [1, 2, 3]
+        uuidNickName = "1.1.5"
+    }
+}

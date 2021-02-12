@@ -61,6 +61,7 @@ shadow {
             }
         }
 
+        uuid = '1234567890'
         loaderApkProjectPath = 'sample-loader'
 
         runtimeApkProjectPath = 'sample-runtime'
