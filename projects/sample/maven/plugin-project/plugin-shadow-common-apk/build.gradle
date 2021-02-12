@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.tencent.shadow.sample.plugin2"
+        applicationId "com.tencent.shadow.sample.common"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
@@ -22,7 +22,7 @@ android {
 }
 
 dependencies {
-    implementation project(':plugin-main-lib2')
+    implementation project(':plugin-common-lib')
 }
 
 android {
@@ -57,41 +57,39 @@ shadow {
     packagePlugin {
         pluginTypes {
             debug {
-//                loaderApkConfig = new Tuple2('sample-loader-debug.apk', ':sample-loader:assembleDebug')
-//                runtimeApkConfig = new Tuple2('sample-runtime-debug.apk', ':sample-runtime:assembleDebug')
+                loaderApkConfig = new Tuple2('sample-loader-debug.apk', ':sample-loader:assembleDebug')
+                runtimeApkConfig = new Tuple2('sample-runtime-debug.apk', ':sample-runtime:assembleDebug')
                 pluginApks {
                     pluginApk1 {
-                        businessName = 'sample-plugin2'//businessName相同的插件，context获取的Dir是相同的。businessName留空，表示和宿主相同业务，直接使用宿主的Dir。
-                        partKey = 'sample-plugin2'
+                        businessName = 'sample-common'//businessName相同的插件，context获取的Dir是相同的。businessName留空，表示和宿主相同业务，直接使用宿主的Dir。
+                        partKey = 'sample-common'
                         buildTask = 'assembleDebug'
-                        dependsOn = ['sample-common']
-                        apkName = 'plugin-shadow-apk2-debug.apk'
-                        apkPath = 'plugin-shadow-apk2/build/outputs/apk/debug/plugin-shadow-apk2-debug.apk'
+                        apkName = 'plugin-shadow-common-apk-debug.apk'
+                        apkPath = 'plugin-shadow-common-apk/build/outputs/apk/debug/plugin-shadow-common-apk-debug.apk'
                     }
                 }
             }
 
             release {
-//                loaderApkConfig = new Tuple2('sample-loader-release.apk', ':sample-loader:assembleRelease')
-//                runtimeApkConfig = new Tuple2('sample-runtime-release.apk', ':sample-runtime:assembleRelease')
+                loaderApkConfig = new Tuple2('sample-loader-release.apk', ':sample-loader:assembleRelease')
+                runtimeApkConfig = new Tuple2('sample-runtime-release.apk', ':sample-runtime:assembleRelease')
                 pluginApks {
                     pluginApk1 {
-                        businessName = 'demo2'
-                        partKey = 'sample-plugin2'
+                        businessName = 'sample-common'
+                        partKey = 'sample-common'
                         buildTask = 'assembleRelease'
-                        dependsOn = ['sample-common']
-                        apkName = 'plugin-shadow-apk2-release.apk'
-                        apkPath = 'plugin-shadow-apk2/build/outputs/apk/release/plugin-shadow-apk2-release.apk'
+                        apkName = 'plugin-shadow-common-apk-release.apk'
+                        apkPath = 'plugin-shadow-common-apk/build/outputs/apk/release/plugin-shadow-common-apk-release.apk'
                     }
                 }
             }
         }
 
         uuid = '1234567890'
-//        loaderApkProjectPath = 'sample-loader'
-//        runtimeApkProjectPath = 'sample-runtime'
+        loaderApkProjectPath = 'sample-loader'
+        runtimeApkProjectPath = 'sample-runtime'
 
-        archivePrefix = 'plugin2'
+        archivePrefix = 'pluginCommon'
 
         version = 4
         compactVersion = [1, 2, 3]
