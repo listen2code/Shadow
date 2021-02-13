@@ -61,9 +61,45 @@ public class SamplePluginManager extends FastPluginManager {
             onStartActivity(context, bundle, callback);
         } else if (fromId == Constant.FROM_ID_CALL_SERVICE) {
             callPluginService(context);
+        } else if (fromId == Constant.FROM_LOAD_PLUGIN) {
+            onLoadPlugin(context, bundle, callback);
         } else {
             throw new IllegalArgumentException("不认识的fromId==" + fromId);
         }
+    }
+
+    private void onLoadPlugin(final Context context, Bundle bundle, final EnterCallback callback) {
+        final String pluginZipPath = bundle.getString(Constant.KEY_PLUGIN_ZIP_PATH);
+        final String partKey = bundle.getString(Constant.KEY_PLUGIN_PART_KEY);
+        final Bundle extras = bundle.getBundle(Constant.KEY_EXTRAS);
+
+        if (callback != null) {
+            final View view = LayoutInflater.from(mCurrentContext).inflate(R.layout.activity_load_plugin, null);
+            callback.onShowLoadingView(view);
+        }
+
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    InstalledPlugin installedPlugin
+                            = installPlugin(pluginZipPath, null, true);//这个调用是阻塞的
+                    loadPlugin(installedPlugin, partKey);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                if (callback != null) {
+                    Handler uiHandler = new Handler(Looper.getMainLooper());
+                    uiHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onCloseLoadingView();
+                            callback.onEnterComplete();
+                        }
+                    });
+                }
+            }
+        });
     }
 
     private void onStartActivity(final Context context, Bundle bundle, final EnterCallback callback) {

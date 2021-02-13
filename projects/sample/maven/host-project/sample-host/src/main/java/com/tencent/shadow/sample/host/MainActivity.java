@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tencent.shadow.dynamic.host.EnterCallback;
 import com.tencent.shadow.dynamic.host.PluginManager;
@@ -15,6 +16,7 @@ public class MainActivity extends Activity {
 
     public static final int FROM_ID_START_ACTIVITY = 1001;
     public static final int FROM_ID_CALL_SERVICE = 1002;
+    public static final int FROM_LOAD_PLUGIN = 1003;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +40,9 @@ public class MainActivity extends Activity {
                     Bundle bundle = new Bundle();
                     bundle.putString("pluginZipPath", "/data/local/tmp/pluginCommon-debug.zip");
                     bundle.putString("KEY_PLUGIN_PART_KEY", "sample-common");
-                    bundle.putString("KEY_ACTIVITY_CLASSNAME", "com.tencent.shadow.sample.common.MainActivity");
 
                     PluginManager pluginManager = InitApplication.getPluginManager();
-                    pluginManager.enter(MainActivity.this, FROM_ID_START_ACTIVITY, bundle, new EnterCallback() {
+                    pluginManager.enter(MainActivity.this, FROM_LOAD_PLUGIN, bundle, new EnterCallback() {
                         @Override
                         public void onShowLoadingView(View view) {
                             MainActivity.this.setContentView(view);//显示Manager传来的Loading页面
@@ -50,6 +51,7 @@ public class MainActivity extends Activity {
                         @Override
                         public void onCloseLoadingView() {
                             MainActivity.this.setContentView(linearLayout);
+                            Toast.makeText(MainActivity.this, "commonPlugin初始化完成~", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override

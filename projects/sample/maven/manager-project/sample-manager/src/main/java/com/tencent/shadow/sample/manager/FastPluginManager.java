@@ -117,6 +117,10 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
         loadPluginLoader(uuid);
     }
 
+    public void loadPlugin(InstalledPlugin installedPlugin, String partKey) throws RemoteException, TimeoutException, FailedException {
+        loadPlugin(installedPlugin.UUID, partKey);
+    }
+
     protected void loadPlugin(String uuid, String partKey) throws RemoteException, TimeoutException, FailedException {
         loadPluginLoaderAndRuntime(uuid);
         Map map = mPluginLoader.getLoadedPlugin();
