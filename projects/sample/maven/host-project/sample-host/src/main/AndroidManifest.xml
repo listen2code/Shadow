@@ -6,7 +6,7 @@
         android:allowBackup="true"
         android:label="Shadow Sample Host"
         android:name=".MyApplication"
-        android:theme="@android:style/Theme.DeviceDefault">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
