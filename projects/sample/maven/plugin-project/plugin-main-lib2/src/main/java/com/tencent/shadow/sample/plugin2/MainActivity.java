@@ -2,9 +2,9 @@ package com.tencent.shadow.sample.plugin2;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.tencent.shadow.sample.common.BaseActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
